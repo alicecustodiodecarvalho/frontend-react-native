@@ -8,7 +8,8 @@ export default function Header() {
             <View style={styles.user}>
                 <Image
                     style={styles.avatar}
-                    source="https://cursinhoparamedicina.com.br/wp-content/uploads/2022/10/Paisagem-1.jpg"
+                    source={require('../assets/avatar-alice.jpg')}
+                    // source="https://cursinhoparamedicina.com.br/wp-content/uploads/2022/10/Paisagem-1.jpg"
                 />
                 <Text style={styles.name}>Alice Custódio</Text>
             </View>
@@ -19,13 +20,12 @@ export default function Header() {
 
 const styles = StyleSheet.create({
     header: {
-        flex: 1,
-        // backgroundColor: 'brown',
-        justifyContent: 'center',
+        backgroundColor: 'brown',
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 15
+        padding: 15,
+        paddingTop: 30
     },
     user:{
         flexDirection:'row',
