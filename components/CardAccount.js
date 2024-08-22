@@ -1,17 +1,17 @@
 import {View, Text, StyleSheet} from "react-native";
 import { Image } from 'expo-image';
 
-export default function CardAccount() {
+export default function CardAccount ({ service, userName, imgUrl}) {
+
     return(
         <View style={styles.card}>
             <Image 
                 style={styles.logo}
-                source={require('../assets/twitter-logo.jpeg')}
+                source={imgUrl}
             />
-
             <View style={styles.content}>
-                <Text style={styles.service}>Twitter</Text>
-                <Text style={styles.username}>alicee_custodio</Text>
+                <Text style={styles.service}>{service}</Text>
+                <Text style={styles.username}>{userName}</Text>
             </View>
         </View>
     )
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         height: 60
     },
     content: {
-        gap: 6 
+        gap: 8 
     },
     service: {
         fontSize: 17
