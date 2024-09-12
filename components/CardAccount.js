@@ -1,20 +1,45 @@
-import {View, Text, StyleSheet} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from 'expo-image';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export default function CardAccount ({ service, userName, imgUrl}) {
+export default function NewCardAccount({ id, service, userName, imgUrl, accounts, setAccounts }) {
 
-    return(
+    const handleDelete = async () => {
+        const response = await fetch(`http://localhost:3000/account/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            const newAccounts = accounts.filter((item) => item.id !== id);
+            setAccounts(newAccounts);
+            return;
+        }
+        console.log('Erro ao deletar conta');
+        return;
+    }
+
+    return (
         <View style={styles.card}>
-            <Image 
+            <Image
                 style={styles.logo}
                 source={imgUrl}
             />
+
             <View style={styles.content}>
-                <Text style={styles.service}>{service}</Text>
-                <Text style={styles.username}>{userName}</Text>
+                <View style={styles.textContainer}>
+                    <Text style={styles.service}>{service}</Text>
+                    <Text style={styles.username}>{userName}</Text>
+                </View>
+                <Pressable onPress={handleDelete} style={styles.dele}>
+                    <FontAwesome name="trash-o" size={24} color="black" />
+                </Pressable>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -26,19 +51,30 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 15,
         borderRadius: 10,
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 10 // Adicione um pouco de espaço entre os cards
     },
     logo: {
         width: 60,
         height: 60
     },
     content: {
-        gap: 8 
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    textContainer: {
+        flex: 1,
+        gap: 8
     },
     service: {
         fontSize: 17
-    }, 
+    },
     username: {
         color: '#777777'
+    },
+    dele: {
+        marginLeft: 10
     }
-  }) 
+});
