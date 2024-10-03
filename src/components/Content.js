@@ -1,52 +1,48 @@
 import { useEffect, useState } from 'react'
-import { View, Text, StyleSheet} from "react-native";
-import CardAccount from "./CardAccount";
-// import Button from './Button';
-import { Link, useNavigation } from 'expo-router';
+import {View, StyleSheet, Text} from 'react-native'
+import CardAccount from './CardAccount'
+import { useLocalSearchParams } from 'expo-router'
 
-export default function Content() {
+export default function Content(){
 
-    const [accounts, setAccounts] = useState([])
-    const navigation = useNavigation()
-
-    navigation.dispatch('/signup')
-
-    useEffect(() => {
+  const [accounts, setAccounts] = useState([])
+ 
+   useEffect(() => {
         const getAccounts = async () => {
             const response = await fetch('http://localhost:3000/account/list')
-            if (response.ok) {
-                const data = await response.json()
-                console.log(data)
-                setAccounts(data.accounts)
-                return
+            if(response.ok){
+              const data = await response.json()
+              console.log(data)
+              setAccounts(data.accounts)
+              return
             }
             console.log('Erro ao carregar accounts')
             return
         }
 
         getAccounts()
-    }, [])
+   }, [])
+
 
     return (
         <View style={styles.content}>
+               
+        { accounts.length === 0 && <Text>Loading...</Text>}
 
-            {accounts.length === 0 && <Text>Loading...</Text>}
-
-            <Link href={'/signup'}>+ Novo serviço</Link>
-
-            {
-                accounts.map((account) =>
-                    <CardAccount
-                        key={account.id}
-                        id={account.id}
-                        service={account.service}
-                        imgUrl={account.logo_image}
-                        userName={account.username}
-                        accounts={accounts}
-                        setAccounts={setAccounts}
-                    />
-                )
-            }
+        {
+          accounts.map( (account) => 
+            <CardAccount
+              key={account.id}
+              id={account.id} 
+              service={account.service}
+              imgUrl={account.logo_image}
+              userName={account.username}
+              pass={account.pass}
+              accounts={accounts}
+              setAccounts={setAccounts}
+            /> 
+          )
+        }
         </View>
     )
 }
@@ -54,6 +50,9 @@ export default function Content() {
 const styles = StyleSheet.create({
     content: {
         gap: 10,
+        //backgroundColor: "#545656",
         padding: 15
-    }
-}) 
+        //justifyContent: 'center',
+        //alignItems: 'center'
+      }
+})

@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import { Image } from 'expo-image';
+import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { Image } from 'expo-image'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useNavigation } from 'expo-router'
 
-export default function NewCardAccount({ id, service, userName, imgUrl, accounts, setAccounts }) {
+export default function CardAccount({ id, service, userName, imgUrl, pass, accounts, setAccounts }) {
+
+    const navigation = useNavigation()
 
     const handleDelete = async () => {
         const response = await fetch(`http://localhost:3000/account/${id}`, {
@@ -10,36 +13,35 @@ export default function NewCardAccount({ id, service, userName, imgUrl, accounts
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        })
         if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            const newAccounts = accounts.filter((item) => item.id !== id);
-            setAccounts(newAccounts);
-            return;
+            const data = await response.json()
+            console.log(data)
+            const newAccounts = accounts.filter((item) => item.id !== id)
+            setAccounts(newAccounts)
+            return
         }
-        console.log('Erro ao deletar conta');
-        return;
+        console.log('Erro ao carregar accounts')
+        return
     }
 
     return (
         <View style={styles.card}>
-            <Image
-                style={styles.logo}
-                source={imgUrl}
-            />
-
+            <Pressable onPress={() => navigation.navigate('showPass', { imgUrl, pass, service, userName })}>
+                <Image
+                    style={styles.logo}
+                    source={imgUrl}
+                />
+            </Pressable>
             <View style={styles.content}>
-                <View style={styles.textContainer}>
-                    <Text style={styles.service}>{service}</Text>
-                    <Text style={styles.username}>{userName}</Text>
-                </View>
+                <Text style={styles.service}>{service}</Text>
+                <Text style={styles.username}>{userName}</Text>
                 <Pressable onPress={handleDelete} style={styles.dele}>
                     <FontAwesome name="trash-o" size={24} color="black" />
                 </Pressable>
             </View>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -51,30 +53,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 15,
         borderRadius: 10,
-        alignItems: 'center',
-        marginBottom: 10 // Adicione um pouco de espaço entre os cards
+        alignItems: 'center'
     },
     logo: {
         width: 60,
         height: 60
     },
     content: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    textContainer: {
-        flex: 1,
-        gap: 8
+        gap: 6
     },
     service: {
         fontSize: 17
     },
     username: {
         color: '#777777'
-    },
-    dele: {
-        marginLeft: 10
     }
-});
+})
