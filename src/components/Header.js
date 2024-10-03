@@ -8,7 +8,7 @@ export default function Header() {
             <View style={styles.user}>
                 <Image
                     style={styles.avatar}
-                    source={require('../assets/avatar-alice.jpg')}
+                    source={require('../../assets/avatar-alice.jpg')}
                     // source="https://cursinhoparamedicina.com.br/wp-content/uploads/2022/10/Paisagem-1.jpg"
                 />
                 <Text style={styles.name}>Alice Custódio</Text>
