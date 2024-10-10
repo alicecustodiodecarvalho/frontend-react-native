@@ -1,13 +1,13 @@
-import {View, StyleSheet, Text, TextInput, Pressable} from 'react-native'
+import { View, StyleSheet, Text, TextInput, Pressable } from 'react-native'
 import { Image } from 'expo-image'
 import Button from '../components/Button'
-import { useLocalSearchParams, useRouter} from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useAccountStore } from '../stores/useAccountStore'
 
-export default function ShowPass(){
+export default function ShowPass() {
 
     const router = useRouter()
-    const {id} = useLocalSearchParams()
+    const { id } = useLocalSearchParams()
     const { accounts, deleteAccount } = useAccountStore()
 
     const account = accounts.find((item) => item.id === +id)
@@ -19,7 +19,7 @@ export default function ShowPass(){
                 'Content-Type': 'application/json'
             }
         })
-        if(response.ok){
+        if (response.ok) {
             const data = await response.json()
             console.log(data)
             deleteAccount(+id)
@@ -31,22 +31,25 @@ export default function ShowPass(){
     }
 
     return (
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
             <View style={styles.card}>
-                <Image 
-                    style={styles.logo} 
+                <Image
+                    style={styles.logo}
                     source={account?.logo_image}
                 />
                 <View style={styles.content}>
                     <Text style={styles.service}>{account?.service}</Text>
                     <Text style={styles.username}>{account?.username}</Text>
                 </View>
-        </View>
+            </View>
             <View>
                 <TextInput style={styles.input} value={account?.pass || ''} />
             </View>
             <Button>Copiar Senha</Button>
-            <Button onPress={handleDelete}>Excluir</Button>
+            <View style={{ flexDirection: 'row', gap: 20, flex: 1, justifyContent: 'space-between' }}>
+                <Button onPress={() => router.push({ pathname: '/update', params: { id } })}>Editar</Button>
+                <Button onPress={handleDelete}>Excluir</Button>
+            </View>
         </View>
     )
 }
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center'
     },
-    logo:{
+    logo: {
         width: 60,
         height: 60
     },
